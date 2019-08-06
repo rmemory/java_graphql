@@ -1,4 +1,4 @@
-package com.udacity.graphql;
+package com.myexample.graphql;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
