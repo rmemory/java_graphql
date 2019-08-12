@@ -4,11 +4,16 @@ import javax.persistence.*;
 
 @Entity
 public class Location {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+	@Id
+	@Column
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+	@Column
     private String name;
+	@Column
     private String address;
 
     public Location(Long id, String name, String address) {

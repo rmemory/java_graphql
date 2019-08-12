@@ -1,0 +1,233 @@
+{
+	"info": {
+		"_postman_id": "57173f7a-df90-4bd7-b836-f4c512423b84",
+		"name": "java_graphql_location_integration_tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "queries",
+			"item": [
+				{
+					"name": "Find Location by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3dfb5cb7-55b8-4a9c-9645-65bff1af37bb",
+								"exec": [
+									"pm.test(\"Array lengthg of 1\", function() {",
+									"    var jsonData = pm.response.json();",
+									"     pm.expect(jsonData.data.findLocation.length).to.eql(1);",
+									"})",
+									"",
+									"pm.test(\"Successful string airport name in location\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(typeof jsonData.data.findLocation[0].name).to.eql(\"string\");",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"query\": \"query($id: ID!) { findLocation(id: $id) { name id address} }\",\n\t\"variables\": { \"id\" : 1 }\n}"
+						},
+						"url": {
+							"raw": "{{url}}:{{port}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find All Locations",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"query\":\"{findLocation { name id address} }\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}:{{port}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "b01e435b-9803-4fe9-9ba7-32b77fefd829",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "77cca9f1-f8cf-41b4-898a-ba19750ff015",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Successful POST request with body\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});"
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "mutations",
+			"item": [
+				{
+					"name": "Create New Location",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"query\": \"mutation foobar($name: String!, $address: String!) { newLocation(name: $name, address: $address) { name id address} }\",\n\t\"variables\": { \"name\" : \"SLC\", \"address\": \"123 airport street\"}\n}\n\n"
+						},
+						"url": {
+							"raw": "{{url}}:{{port}}/graphql",
+							"host": [
+								"{{url}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "c6a3d153-92cc-4ad2-a0e6-1fc07a49dd33",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "d3b26c30-9999-42f3-ba3c-58d423a312df",
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Successful POST request with body\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"    pm.response.to.be.json;",
+							"});",
+							"",
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});"
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "6fcb33cc-c5ef-426e-9fda-2f381f73d7f6",
+				"type": "text/javascript",
+				"exec": [
+					"let url = pm.variables.get(\"url\");",
+					"console.log(\"Current url is: \" + url);",
+					"",
+					"let port = pm.variables.get(\"port\");",
+					"console.log(\"Current port is: \" + port)"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "39d0b1ba-b606-46b0-bf07-d8a29d4591fc",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "3fc92a51-b391-4095-88c9-cc7ea22359eb",
+			"key": "port",
+			"value": "8080",
+			"type": "string"
+		},
+		{
+			"id": "2cd269bb-710d-41bb-8374-61c1e5572b0b",
+			"key": "url",
+			"value": "http://localhost",
+			"type": "string"
+		}
+	]
+}
